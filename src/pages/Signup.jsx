@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { LinkIcon, EyeIcon, EyeSlashIcon, CheckIcon } from '@heroicons/react/24/outline';
+import toast from 'react-hot-toast';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -69,18 +70,25 @@ const Signup = () => {
     setLoading(true);
 
     try {
+      console.log('Attempting signup with:', { ...formData, password: '[REDACTED]' });
       const result = await signup({
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        website: formData.website,
+        website: formData.website || undefined,
       });
       
+      console.log('Signup result:', result);
+      
       if (result.success) {
+        toast.success('Account created successfully!');
         navigate('/dashboard');
+      } else {
+        toast.error(result.message || 'Failed to create account. Please try again.');
       }
     } catch (error) {
       console.error('Signup error:', error);
+      toast.error(error.response?.data?.detail || 'An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }

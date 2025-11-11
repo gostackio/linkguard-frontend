@@ -11,7 +11,7 @@ import {
   LinkIcon,
   ExclamationTriangleIcon,
   ArrowRightIcon,
-  SparklesIcon
+  StarIcon
 } from '@heroicons/react/24/outline';
 
 const Landing = () => {
@@ -39,7 +39,7 @@ const Landing = () => {
       description: "Get notified the moment a link breaks via email or Slack"
     },
     {
-      icon: <SparklesIcon className="w-6 h-6" />,
+      icon: <StarIcon className="w-6 h-6" />,
       title: "AI Replacements",
       description: "Get smart suggestions for alternative products when links die"
     },

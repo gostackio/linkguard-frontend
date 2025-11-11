@@ -30,40 +30,10 @@ const Links = () => {
   const fetchLinks = async () => {
     setLoading(true);
     try {
-      // Mock data - replace with actual API call
-      setLinks([
-        {
-          id: 1,
-          url: 'https://amazon.com/dp/B08N5WRWNW',
-          title: 'Echo Dot (4th Gen)',
-          page: 'Smart Home Setup Guide',
-          status: 'active',
-          lastChecked: '2 hours ago',
-          clicks: 1234,
-          revenue: 456.78,
-        },
-        {
-          id: 2,
-          url: 'https://bestbuy.com/site/apple-airpods-pro',
-          title: 'AirPods Pro',
-          page: 'Best Wireless Earbuds 2024',
-          status: 'broken',
-          lastChecked: '1 hour ago',
-          clicks: 890,
-          revenue: 234.50,
-        },
-        {
-          id: 3,
-          url: 'https://target.com/p/instant-pot-duo',
-          title: 'Instant Pot Duo',
-          page: 'Kitchen Essentials',
-          status: 'warning',
-          lastChecked: '3 hours ago',
-          clicks: 567,
-          revenue: 123.45,
-        },
-      ]);
+      const response = await linksAPI.getAll();
+      setLinks(response.data);
     } catch (error) {
+      console.error('Error fetching links:', error);
       toast.error('Failed to load links');
     } finally {
       setLoading(false);

@@ -48,14 +48,19 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
-      const { token, user } = response.data;
-      setToken(token);
+      // Form data format required by backend
+      const formData = new FormData();
+      formData.append('username', email);  // backend expects username field
+      formData.append('password', password);
+
+      const response = await axios.post('/api/auth/login', formData);
+      const { access_token, user } = response.data;
+      setToken(access_token);
       setUser(user);
       toast.success('Logged in successfully!');
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Login failed';
+      const message = error.response?.data?.detail || 'Incorrect email or password';
       toast.error(message);
       return { success: false, message };
     }
