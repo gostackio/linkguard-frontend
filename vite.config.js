@@ -8,7 +8,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'https://linkguard-api-733656195503.us-central1.run.app',
         changeOrigin: true,
       }
     }
