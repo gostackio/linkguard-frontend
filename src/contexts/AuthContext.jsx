@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import api from '../services/api';
 
 const AuthContext = createContext();
 
@@ -33,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
       if (token) {
         try {
-          const response = await axios.get('/api/auth/me');
+          const response = await api.get('/auth/me');
           setUser(response.data);
         } catch (error) {
           console.error('Auth check failed:', error);
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       formData.append('username', email);  // backend expects username field
       formData.append('password', password);
 
-      const response = await axios.post('/api/auth/login', formData);
+      const response = await api.post('/auth/login', formData);
       const { access_token, user } = response.data;
       setToken(access_token);
       setUser(user);
@@ -68,14 +69,14 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (userData) => {
     try {
-      const response = await axios.post('/api/auth/signup', userData);
-      const { token, user } = response.data;
-      setToken(token);
+      const response = await api.post('/auth/signup', userData);
+      const { access_token, user } = response.data;
+      setToken(access_token);
       setUser(user);
       toast.success('Account created successfully!');
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Signup failed';
+      const message = error.response?.data?.detail || 'Signup failed';
       toast.error(message);
       return { success: false, message };
     }
